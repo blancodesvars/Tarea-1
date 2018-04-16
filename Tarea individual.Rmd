@@ -1,0 +1,124 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+---
+  title: "Tarea individual 1"
+  author: "Martin Gabriel Blanco Desvars"
+  output: pdf_document
+  ---
+  
+  ```{r setup, include=FALSE}
+  knitr::opts_chunk$set(echo = TRUE)
+  ```
+  
+  ```{r, echo=FALSE}
+  library(ggplot2)
+library(gapminder)
+```
+## Entrega
+
+La tarea debe ser realizada en RMarkdown en un repositorio de GitHub llamado "Tarea 1".
+La tarea es individual por lo que cada uno tiene que escribir su propia versión de la tarea.
+El repositorio debe contener unicamente el archivo .Rmd con la solución de la tarea.
+Vamos a utilizar la librería `gapminder`, por lo que si no la usaste anteriormente tenés que instalarla y luego cargarla.
+Para obtener la descripción del paquete `library(help = "gapminder")` y para saber sobre la base `?gapminder`.
+
+##  Idea básica de regresión lineal 
+
+Una regresión lineal es una aproximación utilizada para modelar la relación entre dos variables que llamaremos `X` e `Y`. Donde Y es la variable que queremos explicar y X la variable explicativa (regresión simple).
+
+El análisis de regresión ajusta una curva a travéz  de los datos que representa la media de Y dado un valor especificado de X.
+Si ajustamos una regresión lineal a los datos consideramos "la curva media" como aquella que mejor ajusta a los datos.
+
+Algunas veces ajustamos curvas genéricas promediando puntos cercanos entre si con  métodos de suavizado no necesariamente lineales.
+¿Cómo incluimos una recta de regresión en nuestro gráfico?
+
+ajustamos una recta de regresión a los datos en  Para agregar una linea de regresión o una curva tinenes que agregar una capa a tu gráfico `geom_smoth`. Probablemente dos de los argumentos más útiles de `geom_smoth` son:
+
+- `method = ...`
+    * ..."lm" para una linea recta. `lm`  "Linear Model".
+    * ...otro para una curva genérica (llamada de suavizado; por defecto, es la parte `smooth` de `geom_smooth`).
+    * `se=...` controla si los intervalos de confianza son dibujados o no.
+
+Ejemplo:
+```{r, echo=TRUE}
+vc1 <- ggplot(gapminder, aes(year, lifeExp)) +
+    geom_point() 
+vc1 + geom_smooth(se = FALSE)
+
+```
+En este caso  `geom_smooth()` está usando `method = 'gam'`
+
+```{r, echo=TRUE}
+vc1 + geom_smooth(method = "lm")
+```
+
+
+## Ejercicio 1
+
+Hacer un gráfico de dispersión que tenga en el eje `y` `year` y en el eje `x`  `lifeExp`, los puntos deben estar coloreados por la variable `continent`. Para este plot ajustá una recta de regresión para cada continente sin incluir las barras de error. Las etiquetas de los ejes deben ser claras y describir las variables involucradas. Incluir un `caption` en la figura con algún comentario de interés que describa el gráfico.
+
+```{r, echo=TRUE}
+ggplot(gapminder, aes(x=lifeExp , y=year , colour= continent)) + geom_point() + geom_smooth(method = lm , se=FALSE) +
+  labs(x= "Expectativa de vida en años al momento de nacer", y= "Años" , title= "Gráfico de dispersión y rectas de regresión" , colour= "Continentes") +
+  scale_colour_brewer(palette= "Set1", labels= c("África" ,"América" , "Asia", "Europa", "Oceanía"))
+```
+Figura 1. Comparaci[on entre continentes de la expectativa de vida al momento de nacer por quinquenios desde 1952 hasta 2007   
+
+
+
+## Ejercicio 2 
+
+Omitir la capa de  `geom_point` del gráfico anterior. Las lineas aún aparecen aunque los puntos no. ¿Porqué sucede esto? 
+```{r, echo=TRUE}
+ggplot(gapminder, aes(x=lifeExp , y=year , colour= continent)) + geom_smooth(method = lm , se=FALSE) +
+  labs(x= "Expectativa de vida en años al momento de nacer", y= "Años" , title= "Rectas de regresión" , colour= "Continentes") +
+  scale_colour_brewer(palette= "Set1", labels= c("África" ,"América" , "Asia", "Europa", "Oceanía"))
+```
+
+Sucede porque la función geom_smooth está asociada a los datos de las variables que seleccionamos anteriormente en ggplot(gapminder, aes(x=lifeExp , y=year , colour= continent))y no a la visualización de los mismos en forma de puntos. 
+
+## Ejercicio 3
+
+El siguiente es un gráfico de dispersión entre `lifeExp` y `gdpPercap`  coloreado por la variable `continent`. Usando como elemento estético color (`aes`) nosotros podemos distinguir los distintos continentes usando diferentes colores de similar manera usando forma (`shape`).
+
+```{r, echo = FALSE}
+ggplot(gapminder, aes(x=gdpPercap, y=lifeExp, colour = continent)) +
+    geom_point() 
+```
+
+El gráfico anterior está sobrecargado, ¿de que forma modificarías el gráfico para que sea más clara la comparación para los distintos continentes y porqué?
+Las etiquetas de los ejes deben ser claras y describir las variables involucradas. Comentá alguna característica interesante que describa lo que aprendes viendo el gráfico.
+
+```{r , echo= TRUE}
+ggplot(gapminder, aes(y=lifeExp , x=gdpPercap))+
+ geom_point()+ 
+ labs(x= "Producto interno bruto por habitante en dólares", y= "Expectativa de vida en años al momento de nacer" , title= "Gráficos de dispersión " , colour= "Continente")+ 
+ scale_colour_brewer(palette= "Set1", labels= c("África" ,"América" , "Asia", "Europa", "Oceanía"))+
+ facet_wrap(~continent)
+```
+África cuenta con el menor producto interno bruto ademas de la menor expectativa de vida contrastando con Asia. En Oceanía se encuentra una distribución mas homogénea  mientras que Europa y América cuentan con una distribución similar.
+
+## Ejercicio 4
+
+Hacer un gráfico de lineas que tenga en el eje `y` `gdpPercap` y en el eje `x`  `year` para cada continente en una misma ventana gráfica. En cada continenete, el gráfico debe contener una linea para cada país a lo largo del tiempo (serie de tiempo de `gdpPercap`). Las etiquetas de los ejes deben ser claras y describir las variables involucradas. Incluir un `caption` en la figura con algún comentario de interés que describa el gráfico.
+
+```{r, echo=TRUE}
+ ggplot(gapminder, aes(x= year, y= gdpPercap, colour= country)) + 
+  geom_line()+ 
+  facet_wrap(~continent )+ 
+  theme(legend.position = "none")+ 
+  labs(x= "Años", y= "Producto interno bruto por habitante en dólares" , title= "Gráfico de series temporales" , colour= "Continentes")
+```
+Figura 2. Series temporales del Producto Interno Bruto de 142 países por continente en el periodo 1952-2007.
+## Ejercicio 5 
+
+Usando los datos `gapminder` seleccione una visualización que describa algún aspecto de los datos que no exploramos. Comente algo interesante que se puede aprender de su gráfico.
+``` {r, echo=TRUE}
+ggplot(gapminder, aes(x=gdpPercap , y=lifeExp , colour= continent, size= pop))+ geom_point() + 
+  labs(x= "Producto interno bruto por habitante", y= "Expectativa de vida al nacer" , title= "Gráfico de dispersión" , colour= "Continentes") +
+  scale_colour_brewer(labels= c("África" ,"América" , "Asia", "Europa", "Oceanía"))+  xlim(c(3000,7000))+ ylim(c(50, 80))+ guides(size= FALSE)+ scale_colour_manual(values=c("#00CC00", "#FF0000", "#0000FF","#FFFF00", "#FF9933" ))
+```
+Es una variación del gráfico del ejercicio 3 en el que se añade el tamaño de la población como variable. Podemos observar que el tamaño de la población no es un determiante del PIB por habitante y tampoco de la expectativa de vida por lo que podríamos atribuir esos factores a la cultura y el manejo de cada continente y sus países.
