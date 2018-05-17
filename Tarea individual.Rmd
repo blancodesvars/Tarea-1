@@ -67,7 +67,9 @@ ggplot(gapminder, aes(x=lifeExp , y=year , colour= continent)) + geom_point() + 
 ```
 Figura 1. Comparaci[on entre continentes de la expectativa de vida al momento de nacer por quinquenios desde 1952 hasta 2007   
 
-
+\fbox{\begin{minipage}{48em}
+los ejes x e y deben ser al revés  pero posiblemente no viste la versión corregida de la tarea donde estaba arreglado esto. Falta incluir un comentario sobre lo que se visualiza en la figura. Ver solución
+\end{minipage}}
 
 ## Ejercicio 2 
 
@@ -79,6 +81,10 @@ ggplot(gapminder, aes(x=lifeExp , y=year , colour= continent)) + geom_smooth(met
 ```
 
 Sucede porque la función geom_smooth está asociada a los datos de las variables que seleccionamos anteriormente en ggplot(gapminder, aes(x=lifeExp , y=year , colour= continent))y no a la visualización de los mismos en forma de puntos. 
+
+\fbox{\begin{minipage}{48em}
+Ver solución acalra un poco más la idea 
+\end{minipage}}
 
 ## Ejercicio 3
 
@@ -101,6 +107,10 @@ ggplot(gapminder, aes(y=lifeExp , x=gdpPercap))+
 ```
 África cuenta con el menor producto interno bruto ademas de la menor expectativa de vida contrastando con Asia. En Oceanía se encuentra una distribución mas homogénea  mientras que Europa y América cuentan con una distribución similar.
 
+\fbox{\begin{minipage}{48em}
+Bien, igual hay que ver que acá estamos dibujando todos los años y todos los paises. El comentario de Oceaniía es porque hay pocos paises en relación al resto
+\end{minipage}}
+
 ## Ejercicio 4
 
 Hacer un gráfico de lineas que tenga en el eje `y` `gdpPercap` y en el eje `x`  `year` para cada continente en una misma ventana gráfica. En cada continenete, el gráfico debe contener una linea para cada país a lo largo del tiempo (serie de tiempo de `gdpPercap`). Las etiquetas de los ejes deben ser claras y describir las variables involucradas. Incluir un `caption` en la figura con algún comentario de interés que describa el gráfico.
@@ -113,6 +123,10 @@ Hacer un gráfico de lineas que tenga en el eje `y` `gdpPercap` y en el eje `x` 
   labs(x= "Años", y= "Producto interno bruto por habitante en dólares" , title= "Gráfico de series temporales" , colour= "Continentes")
 ```
 Figura 2. Series temporales del Producto Interno Bruto de 142 países por continente en el periodo 1952-2007.
+
+\fbox{\begin{minipage}{48em}
+Falta incluir comentario de lo que se aprende del plot. Por otro lado para que incluir color en este caso, hay muchos paises y no incluiste la leyenda.
+\end{minipage}}
 ## Ejercicio 5 
 
 Usando los datos `gapminder` seleccione una visualización que describa algún aspecto de los datos que no exploramos. Comente algo interesante que se puede aprender de su gráfico.
@@ -122,3 +136,13 @@ ggplot(gapminder, aes(x=gdpPercap , y=lifeExp , colour= continent, size= pop))+ 
   scale_colour_brewer(labels= c("África" ,"América" , "Asia", "Europa", "Oceanía"))+  xlim(c(3000,7000))+ ylim(c(50, 80))+ guides(size= FALSE)+ scale_colour_manual(values=c("#00CC00", "#FF0000", "#0000FF","#FFFF00", "#FF9933" ))
 ```
 Es una variación del gráfico del ejercicio 3 en el que se añade el tamaño de la población como variable. Podemos observar que el tamaño de la población no es un determiante del PIB por habitante y tampoco de la expectativa de vida por lo que podríamos atribuir esos factores a la cultura y el manejo de cada continente y sus países.
+
+\fbox{\begin{minipage}{48em}
+Difícil de sacar conclusiones con esta visualización
+\end{minipage}}
+
+
+\fbox{\begin{minipage}{48em}
+Buen trabajo, es necesario comentar en algunos casos que se aprende de las visualizaciones. A su vez tratá de usar fig.cap en el chunck así te queda numerados los gráficos.
+PUNTOS: 90/100
+\end{minipage}}
